@@ -1,0 +1,76 @@
+json파일 : 객체와 정보를 저장하는 방식의 파일.
+
+nvm : node js의 버전 관리 프로그램
+npm : node js의 패키지 관리 프로그램
+
+npm install 할때 꼭 package.json 파일이 저장되어 있는 상태인지 확인. npm이 package.json파일을 수정하기 때문에 package.json 파일을 저장 한 후에 실행하야 파일의 버전 충돌이 발생하지 않음.
+
+package.json : 패키지에 대한 설명과 정보를 통합해서 담고 있다고 생각.
+npm은 이 json 파일을 통해 패키지에 대한 정보를 확인
+
+package-loc.json : 지금 내가 만드는 패키지에서 필요한 다른 패키지들의 버전에 대한 정보를 들고 있어서 내 패키지가 안전하게 동작할거라는 확신을 주게 함.
+
+dependency : 이 패키지를 사용하기 위해 필요한 다른 패키지를 의미. 프로그램이 필요로 하는 의존성.
+npm은 package.json 파일을 보고 알아서 dependency를 파악, 필요한 패키지를 install해준다. node_modules에다가.
+
+devDependency : 개발자에게 필요한 dependencies. 개발자가 필요로 하는 의존성. node_modules에다가 설치되는거는 똑같음.
+
+babel : 최신 버전의 javascript로 작성한걸 안정적인 버전(기본만 사용한)의 javascript로 컴파일, 정확히는 트랜스파일(소스코드에서 소스코드로 변경)해줌. 즉 내가 사용하는 node js가 최신 javascript를 지원하지 않더라도, babel로 한번 돌린다음 쓰면 안정적으로 사용 가능.
+이 과정에서 플러그인이 변환의 코어 역할을 하는데 여러가지 플러그인들을 모아 놓은 것을 preset이라고 함. 사용하려는 preset을 설치해서 바벨을 사용해야 함. 
+javascript에서 babel을 직접 코드를 써서 require~~~(변환할려는 코드) ~~ 뭐 이런형태로 쓸 수 있지만. 그렇게 쓰는건 너무 비효율 적이므로 package.json에 babel로 컴파일하는 scripts를 만들어서 전달하는 것임.
+“dev”: “babel-node 트랜스파일할코드” 이런식으로
+
+nodemoon : 파일이 수정디는걸 감시해주는 패키지. npm run dev를 계속 실행하지 않아도 됨.
+
+
+port : 컴퓨터로 통하는 문
+local host : 내 컴퓨터를 의미
+
+서버란? 켜져 있는 컴퓨터가 서버로서의 기능을 함. 
+사용자가 request하면 서버가 respond.
+
+cannot get /  -> get은 http의 메소드.   / 는 root페이지, home page를 의미
+
+http는 서버와 소통하는 방법. (서버와 사람, 서버와 서버 전부) 다른방법도 존재하나 보통 http만 씀
+우리가 브라우저에서 무언가 행동을 하면 브라우저가 그 행동을 http request로 만들어서 서버에 보냄
+http request 를 통해 웹사이트에 접속하고 서버에 정보를 보냄. 
+
+application을 설정한 이후 listen을 설정.(외부에 개방).
+app.get("/", 함수, 함수,....) => 해당 서버의 home을 get하려는 request가 있을때 respond로 함수가 실행되게 함.
+express가 이런 상황에서 호출하는 함수를 보통 route handler라고 하는 듯.
+app.get(라우트, 핸들러, ....) 이런 느낌
+
+express에서 route handler에 object 두개가 전달됨.  ( + next 함수 )
+첫번째는 request, 두번째는 response (관습적으로 req, res로 매개변수명 설정)
+
+request를 종료시키는 여러가지 방법이 존재. return을 하거나. request를 종료하는 res의 메소드들을 실행하거나
+res.send() 나 res.end()는 호출하는 것으로 request가 종료됨.
+
+express에 메소드는 그렇게 많지 않음. https://expressjs.com/ 들어가면 확인해볼 수 있음.
+
+route 는 각각의 url. ( url을 통해서 request를 전달 가능 )
+router는 handler로 url을 정돈하는것.
+route를 만들고 route를 다루는 것에 기초하고 있음
+
+middleware : 중간에 있는 소프트웨어. request와 response 사이에 존재.
+모든 middleware는 hanler이고 모든 handler는 middleware가 될수 있음. 
+url이 호출될때 사용되는 함수는 handler 대신 controller라고 표현.
+즉 controller <=> middleware 임.
+controller는 req, res 외에 추가적으로 1개의 매개변수를 기본적으로 더 받음. next.
+next를 호출하면 middleware역할을 하는 것.
+finalware는 next호출없이 본인이 return을 할것.
+관습적으로 마지막 controller에는 매개변수 next쓰지 않음.
+
+express의 listen이 next가 될 함수들을 매개변수로 받아서, 콜백 함수를 호출할때 next함수를 넣어주는 듯함
+
+app.use 는 global middleware를 만들 수 있게 해줌.  app.use를 사용하는 위치가 매우 중요
+app.use(middleware함수1, 함수2,. ..) 를 하면, 그 이후의 모든 route에서 저 middleware함수(들)를 사용함(순차적으로). 
+express는 위에서 아래 순으로 실행 (설정) 되는 것.
+위에서 route가 설정되고 난 뒤에, 아래 코드에서 use로 middleware를 설정해도, 위에서 설정된 route는 use가 설정한 middleware를 모름.
+middleware가 controller역할을 해서 next로 안넘기고 끝낼수도 있음. 상황에 따라서.
+
+
+morgan 은 node.js 용 request logger middleware임.
+morgan 이름으로 import 하기도 하고 logger 이름으로 import하기도 하는 듯
+morgan 함수는 middleware를 return 해줌.
+morgan 함수를 호출하는 5가지 옵션이 존재.
