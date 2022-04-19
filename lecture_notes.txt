@@ -74,3 +74,37 @@ morgan 은 node.js 용 request logger middleware임.
 morgan 이름으로 import 하기도 하고 logger 이름으로 import하기도 하는 듯
 morgan 함수는 middleware를 return 해줌.
 morgan 함수를 호출하는 5가지 옵션이 존재.
+
+
+router는 controller와 url의 관리를 쉽게 해줌. 미니 어플리케이션을 만드는 것.
+/ 는 보통 root.
+root에 아주 가까운 페이지만 가진 라우터를 보통 글로벌 라우터라 함. (홈에서 바로 갈 수 있는 page를 담고 있는 라우터)
+글로벌 라우터의 루트 url은 / 일 것.
+
+라우터를 잘 만들면 url을 체계적으로 쉽게 관리할 수 있음.
+라우터 : route + er : 루트를 잡아주는 것
+라우터로 url을 그룹화하고, 해당 라우터에 url을 전달하는 형식으로 생각.
+라우터를 만들고 /로 구분하고 그뒤에 또 작은 라우터가 만들고 /로 구분하고.. url 이 점점 붙는것
+express.Router() 메소드로 생성 가능.
+app.use로 url에 대해 router를 매칭 가능.
+그리고 router내에서 url을 get하는 것마다 controller를 지정 가능.
+
+
+모든 파일은 모듈이 될 수 있음.
+다른 파일에서 해당 파일을 import하기 위해서는 그 파일이 export를 해야 함.
+기본적으로 하나의 파일은 다른 파일에 대해 private 상태임.
+export에는 몇가지 종류가 존재. 
+
+export default 로 export한 객체는, 해당 모듈을 import할때 가져오는 대상이 됨.
+파일에서 하나만을 export하게 됨.
+또한 import할 때 이름을 import한 사람이 원하는 이름으로 사용할 수 있음.
+
+여러개를 export하는 방법은 변수, 객체, 함수 등의 앞에 export를 붙여서 사용
+import할 때 이름을 중괄호 안에 넣어서 정확하게 사용해야 함. import { ~~ } from ~ 이런 형태로.
+모듈에 작성된 이름을 그대로 쓰지 않으면 받아오지 못함.
+하나의 모듈에서 여러개 import 할때는 {1번, 2번, 3번} 이런식으로 여러개 받을 수 있음
+
+
+url parameter
+url 안에 변수를 포함시킬 수 있게 해줌.  :변수명 형태로 사용
+
